@@ -6,7 +6,8 @@ import (
 )
 
 // Image build command
-const DOCKER_IMAGE_BUILD_CMD = `docker image build --build-arg {{.arguments}} -t {{.image}} --pull {{.path}}`
+const DOCKER_IMAGE_BUILD_CMD = `docker build {{.arguments}} --pull -t {{.image}} {{.path}}`
+const ARG_FLAG = `--build-arg {{.name}}:{{.value}}`
 
 // Container create command
 const DOCKER_CONTAINER_CREATE_CMD = `docker container create 

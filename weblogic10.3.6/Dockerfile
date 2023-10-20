@@ -1,30 +1,31 @@
 
-FROM weblogic:10.3.6
+FROM akrck02/weblogic:10.3.6
 
 # Args
-ARG HDIV_ENABLE=true
-ARG HOSTNAME=wls1036
-ARG HDIV_MAIL=
-ARG ADMIN_PORT_SSL=7002
-ARG DEBUG_PORT=8453
-ARG ADMIN_PORT=7001
-ARG HDIV_CONSOLE_URL=http://www.otc.ejiedes.eus/hdiv-console-services
-ARG MEMORY=512m
+ARG eHDIV_ENABLE=true
+ARG eHDIV_MAIL=
+ARG eHDIV_CONSOLE_URL=http://www.otc.ejiedes.eus/hdiv-console-services
+
+ARG eHOSTNAME=wls1036
+ARG eADMIN_PORT_SSL=7002
+ARG eDEBUG_PORT=8453
+ARG eADMIN_PORT=7001
+ARG eMEMORY=512m
 
 # Environment variables
-ENV HDIV_ENABLE=${HDIV_ENABLE}
+ENV HDIV_ENABLE=${eHDIV_ENABLE}
 ENV CONFIG_JVM_ARGS=-Dweblogic.security.SSL.ignoreHostnameVerification=true
-ENV HOSTNAME=${HOSTNAME}
+ENV HOSTNAME=${eHOSTNAME}
 ENV TERM=xterm
-ENV HDIV_MAIL=${HDIV_MAIL}
-ENV USER_MEM_ARGS="-Djava.security.egd=file:/dev/./urandom -Xms${MEMORY} -Xmx${MEMORY} -XX:PermSize=${MEMORY} -XX:MaxPermSize=${MEMORY}"
+ENV HDIV_MAIL=${eHDIV_MAIL}
+ENV USER_MEM_ARGS="-Djava.security.egd=file:/dev/./urandom -Xms${eMEMORY} -Xmx${eMEMORY} -XX:PermSize=${eMEMORY} -XX:MaxPermSize=${eMEMORY}"
 ENV DOMAIN_NAME=base_domain
 ENV PATH=/usr/java/jdk-7/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/srv/wls1036/wlserver/common/bin:/srv/wls1036/user_projects/domains/base_domain:/srv/wls1036/user_projects/domains/base_domain/bin:/srv/wls1036/scripts
 ENV ADMIN_HOST=localhost
-ENV ADMIN_PORT_SSL=${ADMIN_PORT_SSL}
+ENV ADMIN_PORT_SSL=${eADMIN_PORT_SSL}
 ENV PWD=/srv/wls1036/user_projects/domains/base_domain
-ENV DEBUG_PORT=${DEBUG_PORT}
-ENV ADMIN_PORT=${ADMIN_PORT}
+ENV DEBUG_PORT=${eDEBUG_PORT}
+ENV ADMIN_PORT=${eADMIN_PORT}
 ENV MW_HOME=/srv/wls1036
 ENV JAVA_HOME=/usr/java/jdk-7
 ENV debugFlag=true

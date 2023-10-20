@@ -5,15 +5,31 @@ import (
 	"akrck02/docker-generator/models"
 	"akrck02/docker-generator/templates"
 	"fmt"
+	"os"
+	"os/exec"
+	"strings"
 )
 
 func CreateContainer() {
 
 	var cmd = createContainerCommand()
 
-	// Write the command to the console
-	fmt.Println(cmd)
+	// Execute the command
+	args := strings.Fields(cmd)
+	command := exec.Command(args[0], args[1:]...)
 
+	print("Executing: " + args[0] + " " + strings.Join(args[1:], " "))
+
+	out, err := command.CombinedOutput()
+
+	if err != nil {
+		fmt.Println()
+		fmt.Println(string(out))
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	fmt.Println(string(out))
 }
 
 func createContainerCommand() string {
@@ -69,7 +85,6 @@ func getMountFlags() string {
 
 	mounts := []models.Mount{
 		{HostPath: io.Params.HOST_WEBLOGIC_LOGS_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_LOGS_PATH},
-		{HostPath: io.Params.HOST_WEBLOGIC_DOMAIN_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_DOMAIN_PATH},
 		{HostPath: io.Params.HOST_WEBLOGIC_DEPLOY_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_DEPLOY_PATH},
 		{HostPath: io.Params.HOST_WEBLOGIC_DATA_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_DATA_PATH},
 	}
