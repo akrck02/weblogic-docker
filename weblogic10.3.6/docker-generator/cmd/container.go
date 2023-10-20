@@ -19,8 +19,8 @@ func CreateContainer() {
 func createContainerCommand() string {
 	// generate the docker container create command
 	var cmd = templates.Format(templates.DOCKER_CONTAINER_CREATE_CMD, map[string]string{
-		"name":     getName(),
-		"hostname": getHostname(),
+		"name":     io.Params.CONTAINER_NAME,
+		"hostname": io.Params.HOST_NAME,
 		"ports":    getPortFlags(),
 		"hosts":    getHostFlags(),
 		"mounts":   getMountFlags(),
@@ -77,27 +77,8 @@ func getMountFlags() string {
 	flags := ""
 
 	for _, mount := range mounts {
-		mount.HostPath = templates.Format(mount.HostPath, map[string]string{"appcode": io.Params.APP_CODE})
 		flags += mount.ToString() + " "
 	}
 
 	return flags
-}
-
-// Parse the name
-func getName() string {
-	return templates.Format(io.Params.CONTAINER_NAME,
-		map[string]string{
-			"appcode": io.Params.APP_CODE,
-		},
-	)
-}
-
-// Parse the hostname
-func getHostname() string {
-	return templates.Format(io.Params.HOST_NAME,
-		map[string]string{
-			"appcode": io.Params.APP_CODE,
-		},
-	)
 }

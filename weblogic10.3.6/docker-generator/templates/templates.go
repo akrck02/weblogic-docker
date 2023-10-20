@@ -5,6 +5,10 @@ import (
 	"html/template"
 )
 
+// Image build command
+const DOCKER_IMAGE_BUILD_CMD = `docker image build --build-arg {{.arguments}} -t {{.image}} --pull {{.path}}`
+
+// Container create command
 const DOCKER_CONTAINER_CREATE_CMD = `docker container create 
 --name {{.name}} 
 --hostname {{.hostname}} 

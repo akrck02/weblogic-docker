@@ -9,6 +9,9 @@ import (
 const ENV_PATH = "../resources/.env"
 
 type GlobalConfiguration struct {
+	WEBLOGIC_VERSION   string
+	GENERIC_IMAGE_NAME string
+
 	CONTAINER_NAME string
 	HOST_NAME      string
 	IMAGE_NAME     string
@@ -46,6 +49,10 @@ func LoadEnv() {
 	}
 
 	Params = GlobalConfiguration{
+
+		WEBLOGIC_VERSION:   os.Getenv("WEBLOGIC_VERSION"),
+		GENERIC_IMAGE_NAME: os.Getenv("GENERIC_IMAGE_NAME"),
+
 		CONTAINER_NAME: os.Getenv("CONTAINER_NAME"),
 		HOST_NAME:      os.Getenv("HOST_NAME"),
 		IMAGE_NAME:     os.Getenv("IMAGE_NAME"),
