@@ -23,3 +23,13 @@ jobs:
 
     - name: Build
       run: cd weblogic10.3.6/docker-generator/ && go build .
+
+    - name: Create a Release of commit
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: ${{ github.token }}
+        automatic_release_tag: latest
+        prerelease: false
+        title: weblogic-docker
+        files: |
+          * 
