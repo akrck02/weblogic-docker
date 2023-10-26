@@ -25,7 +25,7 @@ jobs:
       run: cd weblogic10.3.6/docker-generator/ && go build .
 
     - name: List files
-      run: ls -lha
+      run: ls -lha weblogic10.3.6/docker-generator/
 
     - name: Create a Release of commit
       uses: "marvinpinto/action-automatic-releases@latest"
