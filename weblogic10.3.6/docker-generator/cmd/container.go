@@ -5,22 +5,38 @@ import (
 	"akrck02/docker-generator/models"
 	"akrck02/docker-generator/templates"
 	"fmt"
+	"os"
+	"os/exec"
+	"strings"
 )
 
 func CreateContainer() {
 
 	var cmd = createContainerCommand()
 
-	// Write the command to the console
-	fmt.Println(cmd)
+	// Execute the command
+	args := strings.Fields(cmd)
+	command := exec.Command(args[0], args[1:]...)
 
+	print("Executing: " + args[0] + " " + strings.Join(args[1:], " "))
+
+	out, err := command.CombinedOutput()
+
+	if err != nil {
+		fmt.Println()
+		fmt.Println(string(out))
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	fmt.Println(string(out))
 }
 
 func createContainerCommand() string {
 	// generate the docker container create command
 	var cmd = templates.Format(templates.DOCKER_CONTAINER_CREATE_CMD, map[string]string{
-		"name":     getName(),
-		"hostname": getHostname(),
+		"name":     io.Params.CONTAINER_NAME,
+		"hostname": io.Params.HOST_NAME,
 		"ports":    getPortFlags(),
 		"hosts":    getHostFlags(),
 		"mounts":   getMountFlags(),
@@ -69,7 +85,6 @@ func getMountFlags() string {
 
 	mounts := []models.Mount{
 		{HostPath: io.Params.HOST_WEBLOGIC_LOGS_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_LOGS_PATH},
-		{HostPath: io.Params.HOST_WEBLOGIC_DOMAIN_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_DOMAIN_PATH},
 		{HostPath: io.Params.HOST_WEBLOGIC_DEPLOY_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_DEPLOY_PATH},
 		{HostPath: io.Params.HOST_WEBLOGIC_DATA_PATH, ContainerPath: io.Params.CONTAINER_WEBLOGIC_DATA_PATH},
 	}
@@ -77,27 +92,8 @@ func getMountFlags() string {
 	flags := ""
 
 	for _, mount := range mounts {
-		mount.HostPath = templates.Format(mount.HostPath, map[string]string{"appcode": io.Params.APP_CODE})
 		flags += mount.ToString() + " "
 	}
 
 	return flags
-}
-
-// Parse the name
-func getName() string {
-	return templates.Format(io.Params.CONTAINER_NAME,
-		map[string]string{
-			"appcode": io.Params.APP_CODE,
-		},
-	)
-}
-
-// Parse the hostname
-func getHostname() string {
-	return templates.Format(io.Params.HOST_NAME,
-		map[string]string{
-			"appcode": io.Params.APP_CODE,
-		},
-	)
 }
