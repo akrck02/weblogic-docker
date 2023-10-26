@@ -32,4 +32,5 @@ jobs:
         prerelease: false
         title: weblogic-docker
         files: |
-          * 
+          LICENSE
+          */*.sh
