@@ -36,4 +36,4 @@ jobs:
         title: weblogic-docker
         files: |
           LICENSE
-          */*.sh
+          weblogic10.3.6/docker-generator/docker-generator
